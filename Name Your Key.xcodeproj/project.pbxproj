@@ -8,12 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		96CB13651E366CDC0072DDDF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB13641E366CDC0072DDDF /* AppDelegate.swift */; };
-		96CB13671E366CDC0072DDDF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB13661E366CDC0072DDDF /* ViewController.swift */; };
+		96CB13671E366CDC0072DDDF /* RecordAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB13661E366CDC0072DDDF /* RecordAudioViewController.swift */; };
 		96CB136A1E366CDC0072DDDF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96CB13681E366CDC0072DDDF /* Main.storyboard */; };
 		96CB136C1E366CDC0072DDDF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 96CB136B1E366CDC0072DDDF /* Assets.xcassets */; };
 		96CB136F1E366CDC0072DDDF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96CB136D1E366CDC0072DDDF /* LaunchScreen.storyboard */; };
 		96CB137A1E366CDC0072DDDF /* Name_Your_KeyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB13791E366CDC0072DDDF /* Name_Your_KeyTests.swift */; };
 		96CB13851E366CDD0072DDDF /* Name_Your_KeyUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB13841E366CDD0072DDDF /* Name_Your_KeyUITests.swift */; };
+		96CB13951E36DF160072DDDF /* PlayAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB13941E36DF160072DDDF /* PlayAudioViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +37,7 @@
 /* Begin PBXFileReference section */
 		96CB13611E366CDC0072DDDF /* Name Your Key.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Name Your Key.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96CB13641E366CDC0072DDDF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		96CB13661E366CDC0072DDDF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		96CB13661E366CDC0072DDDF /* RecordAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordAudioViewController.swift; sourceTree = "<group>"; };
 		96CB13691E366CDC0072DDDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		96CB136B1E366CDC0072DDDF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		96CB136E1E366CDC0072DDDF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +48,7 @@
 		96CB13801E366CDC0072DDDF /* Name Your KeyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Name Your KeyUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96CB13841E366CDD0072DDDF /* Name_Your_KeyUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Name_Your_KeyUITests.swift; sourceTree = "<group>"; };
 		96CB13861E366CDD0072DDDF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		96CB13941E36DF160072DDDF /* PlayAudioViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlayAudioViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,7 +100,8 @@
 			isa = PBXGroup;
 			children = (
 				96CB13641E366CDC0072DDDF /* AppDelegate.swift */,
-				96CB13661E366CDC0072DDDF /* ViewController.swift */,
+				96CB13661E366CDC0072DDDF /* RecordAudioViewController.swift */,
+				96CB13941E36DF160072DDDF /* PlayAudioViewController.swift */,
 				96CB13681E366CDC0072DDDF /* Main.storyboard */,
 				96CB136B1E366CDC0072DDDF /* Assets.xcassets */,
 				96CB136D1E366CDC0072DDDF /* LaunchScreen.storyboard */,
@@ -262,8 +265,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96CB13671E366CDC0072DDDF /* ViewController.swift in Sources */,
+				96CB13671E366CDC0072DDDF /* RecordAudioViewController.swift in Sources */,
 				96CB13651E366CDC0072DDDF /* AppDelegate.swift in Sources */,
+				96CB13951E36DF160072DDDF /* PlayAudioViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
