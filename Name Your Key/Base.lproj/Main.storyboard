@@ -32,6 +32,10 @@
                                     </label>
                                     <pickerView contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="hve-CS-LD2">
                                         <rect key="frame" x="28" y="222" width="320" height="223"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="BYZ-38-t0r" id="h8N-sJ-SMh"/>
+                                            <outlet property="delegate" destination="BYZ-38-t0r" id="NeA-1D-0pi"/>
+                                        </connections>
                                     </pickerView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BMf-AZ-ove">
                                         <rect key="frame" x="163" y="445" width="49" height="222"/>
@@ -55,6 +59,7 @@
                         <barButtonItem key="rightBarButtonItem" title="Save" id="3Vr-Y7-Swr"/>
                     </navigationItem>
                     <connections>
+                        <outlet property="pickerView" destination="hve-CS-LD2" id="bfP-jC-0cg"/>
                         <outlet property="recordButton" destination="BMf-AZ-ove" id="ats-Tu-els"/>
                         <segue destination="Ssq-Z5-2BO" kind="show" identifier="stopRecording" id="ovg-KX-fbS"/>
                     </connections>
@@ -86,6 +91,10 @@
                                     </label>
                                     <pickerView contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="uzF-tV-JPp">
                                         <rect key="frame" x="28" y="222" width="320" height="223"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="Ssq-Z5-2BO" id="It6-lM-vNd"/>
+                                            <outlet property="delegate" destination="Ssq-Z5-2BO" id="RV9-n5-TQa"/>
+                                        </connections>
                                     </pickerView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ovv-TC-RBe">
                                         <rect key="frame" x="173" y="445" width="30" height="222"/>
@@ -107,6 +116,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="pickerView" destination="uzF-tV-JPp" id="aZW-uv-tdU"/>
                         <outlet property="playButton" destination="Ovv-TC-RBe" id="ZGg-c8-wQ4"/>
                     </connections>
                 </viewController>

@@ -9,17 +9,16 @@
 import UIKit
 import AVFoundation
 
-class PlayAudioViewController: UIViewController, AVAudioPlayerDelegate {
+class PlayAudioViewController: UIViewController, AVAudioPlayerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
 
     var recordedAudioURL: URL!
     var audioPlayer: AVAudioPlayer!
-    
+
     @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var pickerView: UIPickerView!
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
     }
 
@@ -68,4 +67,19 @@ class PlayAudioViewController: UIViewController, AVAudioPlayerDelegate {
         }
     }
     
+    // MARK: UIPickerViewDataSource methods
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return Constants.keys.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return Constants.keys[component].count
+    }
+    
+    // MARK: UIPickerViewDelegate methods
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return Constants.keys[component][row]
+    }
 }

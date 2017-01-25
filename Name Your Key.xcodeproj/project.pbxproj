@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		964296981E3843F700EC9F20 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964296971E3843F700EC9F20 /* Constants.swift */; };
+		9642969A1E3844D400EC9F20 /* KeyPickerViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 964296991E3844D400EC9F20 /* KeyPickerViewDelegate.swift */; };
 		96CB13651E366CDC0072DDDF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB13641E366CDC0072DDDF /* AppDelegate.swift */; };
 		96CB13671E366CDC0072DDDF /* RecordAudioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 96CB13661E366CDC0072DDDF /* RecordAudioViewController.swift */; };
 		96CB136A1E366CDC0072DDDF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 96CB13681E366CDC0072DDDF /* Main.storyboard */; };
@@ -35,6 +37,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		964296971E3843F700EC9F20 /* Constants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		964296991E3844D400EC9F20 /* KeyPickerViewDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyPickerViewDelegate.swift; sourceTree = "<group>"; };
 		96CB13611E366CDC0072DDDF /* Name Your Key.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Name Your Key.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96CB13641E366CDC0072DDDF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		96CB13661E366CDC0072DDDF /* RecordAudioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordAudioViewController.swift; sourceTree = "<group>"; };
@@ -102,6 +106,8 @@
 				96CB13641E366CDC0072DDDF /* AppDelegate.swift */,
 				96CB13661E366CDC0072DDDF /* RecordAudioViewController.swift */,
 				96CB13941E36DF160072DDDF /* PlayAudioViewController.swift */,
+				964296991E3844D400EC9F20 /* KeyPickerViewDelegate.swift */,
+				964296971E3843F700EC9F20 /* Constants.swift */,
 				96CB13681E366CDC0072DDDF /* Main.storyboard */,
 				96CB136B1E366CDC0072DDDF /* Assets.xcassets */,
 				96CB136D1E366CDC0072DDDF /* LaunchScreen.storyboard */,
@@ -267,7 +273,9 @@
 			files = (
 				96CB13671E366CDC0072DDDF /* RecordAudioViewController.swift in Sources */,
 				96CB13651E366CDC0072DDDF /* AppDelegate.swift in Sources */,
+				9642969A1E3844D400EC9F20 /* KeyPickerViewDelegate.swift in Sources */,
 				96CB13951E36DF160072DDDF /* PlayAudioViewController.swift in Sources */,
+				964296981E3843F700EC9F20 /* Constants.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -518,6 +526,7 @@
 				96CB138B1E366CDD0072DDDF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		96CB138C1E366CDD0072DDDF /* Build configuration list for PBXNativeTarget "Name Your KeyTests" */ = {
 			isa = XCConfigurationList;
@@ -526,6 +535,7 @@
 				96CB138E1E366CDD0072DDDF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		96CB138F1E366CDD0072DDDF /* Build configuration list for PBXNativeTarget "Name Your KeyUITests" */ = {
 			isa = XCConfigurationList;
@@ -534,6 +544,7 @@
 				96CB13911E366CDD0072DDDF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

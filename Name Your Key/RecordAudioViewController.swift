@@ -9,13 +9,14 @@
 import UIKit
 import AVFoundation
 
-class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate {
+class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
     var audioRecorder: AVAudioRecorder!
-    
+
     @IBOutlet weak var recordButton: UIButton!
-    
+    @IBOutlet weak var pickerView: UIPickerView!
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
@@ -120,7 +121,21 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate {
         
         return fileManager.fileExists(atPath: self.audioFileLocation())
     }
-
-
+    
+    // MARK: UIPickerViewDataSource methods
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return Constants.keys.count
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return Constants.keys[component].count
+    }
+    
+    // MARK: UIPickerViewDelegate methods
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return Constants.keys[component][row]
+    }
 }
 
