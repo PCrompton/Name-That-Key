@@ -9,60 +9,120 @@
 import UIKit
 import AVFoundation
 
-class PlayAudioViewController: UIViewController, AVAudioPlayerDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
     var recordedAudioURL: URL!
-    var audioPlayer: AVAudioPlayer!
+    var audioFile: AVAudioFile!
+    var audioEngine: AVAudioEngine!
+    var audioPlayerNode: AVAudioPlayerNode!
+    var currentTransposition: Int = 0
+    var currentPlayState: PlayingState = .notPlaying
 
+    var stopTimer: Timer?
+    
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var pickerView: UIPickerView!
     
+    enum PlayingState { case playing, notPlaying }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        pickerView.selectRow(6, inComponent: 0, animated: false)
+        setupAudio()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
     @IBAction func playButtonPressed(_ sender: Any) {
-        playAudio()
-        updatePlayButtonTitle()
+        switch currentPlayState {
+        case .playing:
+            stopAudio()
+        case .notPlaying:
+            playAudio()
+        }
+        updatePlayButtonTitle(playState: currentPlayState)
     }
     
     // MARK: Main
     
-    func playAudio() {
-        let audioSession = AVAudioSession.sharedInstance()
-        
+    func setupAudio() {
+        audioEngine = AVAudioEngine()
         do {
-            try audioSession.setCategory(AVAudioSessionCategoryPlayback)
-            try audioPlayer = AVAudioPlayer(contentsOf: recordedAudioURL)
-            audioPlayer.delegate = self
-            audioPlayer.prepareToPlay()
-            audioPlayer.play()
+            audioFile = try AVAudioFile(forReading: recordedAudioURL)
         } catch {
             print(error)
         }
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, with: .defaultToSpeaker)
+        } catch {
+            print("Could not set AVAudionSession category to .DefaultToSpeaker")
+        }
+
     }
     
-    func audioPlayerDidFinishPlaying(_ player: AVAudioPlayer, successfully flag: Bool) {
-        if flag {
-            //playButton.setTitle("Play", for: .normal)
-            updatePlayButtonTitle()
-        } else {
-            print("Player did not succesffully finish.")
+    func playAudio() {
+        currentPlayState = .playing
+        audioPlayerNode = AVAudioPlayerNode()
+        audioEngine.attach(audioPlayerNode)
+        let changePitchEffect = AVAudioUnitTimePitch()
+        changePitchEffect.pitch = Float(100*currentTransposition) + 1.0
+        audioEngine.attach(changePitchEffect)
+        audioEngine.connect(audioPlayerNode, to: changePitchEffect, format: nil)
+        audioEngine.connect(changePitchEffect, to: audioEngine.outputNode, format:  nil)
+        
+        // schedule to play and start the engine!
+        audioPlayerNode.stop()
+        audioPlayerNode.scheduleFile(audioFile, at: nil) {
+            
+            var delayInSeconds: Double = 0
+            
+            if let lastRenderTime = self.audioPlayerNode.lastRenderTime, let playerTime = self.audioPlayerNode.playerTime(forNodeTime: lastRenderTime) {
+                
+                delayInSeconds = Double(self.audioFile.length - playerTime.sampleTime) / Double(self.audioFile.processingFormat.sampleRate)
+            }
+            
+            // schedule a stop timer for when audio finishes playing
+            if self.currentPlayState == .playing {
+                self.stopTimer = Timer(timeInterval: delayInSeconds, target: self, selector: #selector(PlayAudioViewController.stopAudio), userInfo: nil, repeats: false)
+                RunLoop.main.add(self.stopTimer!, forMode: RunLoopMode.defaultRunLoopMode)
+            }
         }
+        
+        do {
+            try audioEngine.start()
+        } catch {
+            print(error)
+            return
+        }
+        
+        // play the recording!
+        audioPlayerNode.play()
+    }
+    
+    func stopAudio() {
+        
+        if let stopTimer = stopTimer {
+            stopTimer.invalidate()
+        }
+        
+        updatePlayButtonTitle(playState: .notPlaying)
+        
+        if let audioPlayerNode = audioPlayerNode {
+            audioPlayerNode.stop()
+        }
+        
+        if let audioEngine = audioEngine {
+            audioEngine.stop()
+            audioEngine.reset()
+        }
+        currentPlayState = .notPlaying
     }
     
     // MARK: Helpers
     
-    func updatePlayButtonTitle() {
-        if audioPlayer.isPlaying {
-            playButton.setTitle("Playing...", for: .normal)
-        } else {
+    func updatePlayButtonTitle(playState: PlayingState) {
+        switch playState {
+        case .playing:
+            playButton.setTitle("Stop", for: .normal)
+        case .notPlaying:
             playButton.setTitle("Play", for: .normal)
         }
     }
@@ -70,16 +130,20 @@ class PlayAudioViewController: UIViewController, AVAudioPlayerDelegate, UIPicker
     // MARK: UIPickerViewDataSource methods
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return Constants.keys.count
+        return 1
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return Constants.keys[component].count
+        return 13
     }
     
     // MARK: UIPickerViewDelegate methods
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return Constants.keys[component][row]
+        return "\(row-6)"
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        currentTransposition = row-6
     }
 }

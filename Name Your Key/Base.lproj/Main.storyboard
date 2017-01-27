@@ -25,20 +25,20 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oLL-q9-tNC">
-                                        <rect key="frame" x="173" y="0.0" width="29" height="222"/>
+                                        <rect key="frame" x="173.5" y="0.0" width="28.5" height="222.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <pickerView contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="hve-CS-LD2">
-                                        <rect key="frame" x="28" y="222" width="320" height="223"/>
+                                        <rect key="frame" x="27.5" y="222.5" width="320" height="222"/>
                                         <connections>
                                             <outlet property="dataSource" destination="BYZ-38-t0r" id="h8N-sJ-SMh"/>
                                             <outlet property="delegate" destination="BYZ-38-t0r" id="NeA-1D-0pi"/>
                                         </connections>
                                     </pickerView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BMf-AZ-ove">
-                                        <rect key="frame" x="163" y="445" width="49" height="222"/>
+                                        <rect key="frame" x="163" y="444.5" width="49" height="222.5"/>
                                         <state key="normal" title="Record"/>
                                         <connections>
                                             <action selector="recordButtonPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Dpy-VG-Gi6"/>
@@ -83,21 +83,21 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="A4D-rH-cFD">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Key" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xDF-fH-Jsq">
-                                        <rect key="frame" x="173" y="0.0" width="29" height="222"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Semitones" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xDF-fH-Jsq">
+                                        <rect key="frame" x="147" y="0.0" width="81" height="222.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <pickerView contentMode="scaleToFill" verticalHuggingPriority="249" translatesAutoresizingMaskIntoConstraints="NO" id="uzF-tV-JPp">
-                                        <rect key="frame" x="28" y="222" width="320" height="223"/>
+                                        <rect key="frame" x="27.5" y="222.5" width="320" height="222"/>
                                         <connections>
                                             <outlet property="dataSource" destination="Ssq-Z5-2BO" id="It6-lM-vNd"/>
                                             <outlet property="delegate" destination="Ssq-Z5-2BO" id="RV9-n5-TQa"/>
                                         </connections>
                                     </pickerView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ovv-TC-RBe">
-                                        <rect key="frame" x="173" y="445" width="30" height="222"/>
+                                        <rect key="frame" x="172.5" y="444.5" width="30" height="222.5"/>
                                         <state key="normal" title="Play"/>
                                         <connections>
                                             <action selector="playButtonPressed:" destination="Ssq-Z5-2BO" eventType="touchUpInside" id="bHR-gd-6ic"/>
