@@ -53,13 +53,14 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, with: .defaultToSpeaker)
         } catch {
-            print("Could not set AVAudionSession category to .DefaultToSpeaker")
+            print("Could not set AVAudionSession category to .defaultToSpeaker")
         }
 
     }
     
     func playAudio() {
         currentPlayState = .playing
+        pickerView.isUserInteractionEnabled = false
         audioPlayerNode = AVAudioPlayerNode()
         audioEngine.attach(audioPlayerNode)
         let changePitchEffect = AVAudioUnitTimePitch()
@@ -114,6 +115,7 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
             audioEngine.reset()
         }
         currentPlayState = .notPlaying
+        pickerView.isUserInteractionEnabled = true
     }
     
     // MARK: Helpers
