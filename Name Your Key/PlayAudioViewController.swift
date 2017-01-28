@@ -32,6 +32,7 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
     }
 
     @IBAction func playButtonPressed(_ sender: Any) {
+        print("Button Pressed")
         switch currentPlayState {
         case .playing:
             stopAudio()
@@ -83,7 +84,9 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
             // schedule a stop timer for when audio finishes playing
             if self.currentPlayState == .playing {
                 self.stopTimer = Timer(timeInterval: delayInSeconds, target: self, selector: #selector(PlayAudioViewController.stopAudio), userInfo: nil, repeats: false)
-                RunLoop.main.add(self.stopTimer!, forMode: RunLoopMode.defaultRunLoopMode)
+                DispatchQueue.main.async {
+                    RunLoop.main.add(self.stopTimer!, forMode: RunLoopMode.defaultRunLoopMode)
+                }
             }
         }
         
@@ -100,10 +103,8 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
     
     func stopAudio() {
         
-        if let stopTimer = stopTimer {
-            stopTimer.invalidate()
-        }
-        
+        stopTimer?.invalidate()
+    
         updatePlayButtonTitle(playState: .notPlaying)
         
         if let audioPlayerNode = audioPlayerNode {
@@ -116,6 +117,7 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
         }
         currentPlayState = .notPlaying
         pickerView.isUserInteractionEnabled = true
+        
     }
     
     // MARK: Helpers
@@ -142,6 +144,9 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
     // MARK: UIPickerViewDelegate methods
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if (row-6) > 0 {
+            return "+\(row-6)"
+        }
         return "\(row-6)"
     }
     
