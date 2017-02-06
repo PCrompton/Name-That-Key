@@ -15,12 +15,11 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate, UIPi
 
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var pickerView: UIPickerView!
+    
+    var key = ["C", "Major"]
+    
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-        
-        //prepareAudioRecorder()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -82,6 +81,7 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate, UIPi
             let playAudioVC = segue.destination as! PlayAudioViewController
             let recordedAudioURL = URL(fileURLWithPath: audioFileLocation())
             playAudioVC.recordedAudioURL = recordedAudioURL
+            playAudioVC.originalKey = key
         }
     }
     
@@ -118,7 +118,6 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate, UIPi
     
     func verifyFileExists() -> Bool {
         let fileManager = FileManager.default
-        
         return fileManager.fileExists(atPath: self.audioFileLocation())
     }
     
@@ -136,6 +135,10 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate, UIPi
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         return Constants.keys[component][row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        key[component] = Constants.keys[component][row]
     }
 }
 

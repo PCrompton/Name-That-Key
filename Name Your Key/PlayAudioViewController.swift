@@ -15,12 +15,14 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
     var audioFile: AVAudioFile!
     var audioEngine: AVAudioEngine!
     var audioPlayerNode: AVAudioPlayerNode!
+    var originalKey = [String]()
     var currentTransposition: Int = 0
     var currentPlayState: PlayingState = .notPlaying
 
     var stopTimer: Timer?
     
     @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var originalKeyLabel: UILabel!
     @IBOutlet weak var pickerView: UIPickerView!
     
     enum PlayingState { case playing, notPlaying }
@@ -28,6 +30,8 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
     override func viewDidLoad() {
         super.viewDidLoad()
         pickerView.selectRow(6, inComponent: 0, animated: false)
+        
+        setOriginalKey()
         setupAudio()
     }
 
@@ -42,14 +46,45 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
         updatePlayButtonTitle(playState: currentPlayState)
     }
     
+    @IBAction func saveButton(_ sender: Any) {
+        let titleAlertController = UIAlertController(title: "Name Your Recording", message: "Choose a name for your recording:" , preferredStyle: .alert)
+        titleAlertController.addTextField(configurationHandler: nil)
+        let saveAction = UIAlertAction(title: "Save", style: .default) { (saveAction) in
+            if let text = titleAlertController.textFields?[0].text {
+                self.saveAudio(title: "\(text).m4a")
+                _ = self.navigationController?.popToRootViewController(animated: true)
+            } else {
+                DispatchQueue.main.async {
+                    self.saveButton(sender)
+                }
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+        titleAlertController.addAction(saveAction)
+        titleAlertController.addAction(cancelAction)
+        present(titleAlertController, animated: true, completion: nil)
+    }
+    
+    func setOriginalKey() {
+        var originalKeyText = "Original Key: "
+        for index in originalKey.startIndex..<originalKey.endIndex {
+            originalKeyText += originalKey[index]
+            if index != originalKey.endIndex {
+                originalKeyText += " "
+            }
+        }
+        originalKeyLabel.text = originalKeyText
+    }
+    
     // MARK: Main
     
     func setupAudio() {
         audioEngine = AVAudioEngine()
+
         do {
             audioFile = try AVAudioFile(forReading: recordedAudioURL)
         } catch {
-            print(error)
+            fatalError(error.localizedDescription)
         }
         do {
             try AVAudioSession.sharedInstance().setCategory(AVAudioSessionCategoryPlayAndRecord, with: .defaultToSpeaker)
@@ -57,6 +92,11 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
             print("Could not set AVAudionSession category to .defaultToSpeaker")
         }
 
+    }
+    
+    func verifyFileExists() -> Bool {
+        let fileManager = FileManager.default
+        return fileManager.fileExists(atPath: recordedAudioURL.absoluteString)
     }
     
     func playAudio() {
@@ -118,6 +158,21 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
         currentPlayState = .notPlaying
         pickerView.isUserInteractionEnabled = true
         
+    }
+    
+    func saveAudio(title: String) {
+        let stack = (UIApplication.shared.delegate as! AppDelegate).stack
+        let fm = FileManager.default
+        do {
+            let url = try fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("\(title).m4a")
+            try fm.copyItem(at: audioFile.url, to: url)
+            
+            _ = Recording(title: title, key: "\(originalKey[0]) \(originalKey[1])", url: url, context: stack.context)
+            stack.save()
+        } catch {
+            print(error)
+        }
+
     }
     
     // MARK: Helpers
