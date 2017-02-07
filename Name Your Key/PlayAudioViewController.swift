@@ -11,11 +11,10 @@ import AVFoundation
 
 class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
-    var recordedAudioURL: URL!
+    var recording: Recording!
     var audioFile: AVAudioFile!
     var audioEngine: AVAudioEngine!
     var audioPlayerNode: AVAudioPlayerNode!
-    var originalKey = [String]()
     var currentTransposition: Int = 0
     var currentPlayState: PlayingState = .notPlaying
 
@@ -24,15 +23,28 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var originalKeyLabel: UILabel!
     @IBOutlet weak var pickerView: UIPickerView!
+    @IBOutlet weak var saveButton: UIBarButtonItem!
     
     enum PlayingState { case playing, notPlaying }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         pickerView.selectRow(6, inComponent: 0, animated: false)
-        
-        setOriginalKey()
+        if let title = recording.title {
+            self.title = title
+            saveButton.isEnabled = false
+        } else {
+            self.title = "Untitled"
+        }
+        originalKeyLabel.text = recording.key!
         setupAudio()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if recording.title == nil {
+            Constants.stack.delete(objects: [recording])
+        }
     }
 
     @IBAction func playButtonPressed(_ sender: Any) {
@@ -65,24 +77,13 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
         present(titleAlertController, animated: true, completion: nil)
     }
     
-    func setOriginalKey() {
-        var originalKeyText = "Original Key: "
-        for index in originalKey.startIndex..<originalKey.endIndex {
-            originalKeyText += originalKey[index]
-            if index != originalKey.endIndex {
-                originalKeyText += " "
-            }
-        }
-        originalKeyLabel.text = originalKeyText
-    }
-    
     // MARK: Main
     
     func setupAudio() {
         audioEngine = AVAudioEngine()
 
         do {
-            audioFile = try AVAudioFile(forReading: recordedAudioURL)
+            audioFile = try AVAudioFile(forReading: URL(string: recording.url!)!)
         } catch {
             fatalError(error.localizedDescription)
         }
@@ -92,11 +93,6 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
             print("Could not set AVAudionSession category to .defaultToSpeaker")
         }
 
-    }
-    
-    func verifyFileExists() -> Bool {
-        let fileManager = FileManager.default
-        return fileManager.fileExists(atPath: recordedAudioURL.absoluteString)
     }
     
     func playAudio() {
@@ -161,13 +157,14 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
     }
     
     func saveAudio(title: String) {
-        let stack = (UIApplication.shared.delegate as! AppDelegate).stack
+        let stack = Constants.stack
         let fm = FileManager.default
         do {
             let url = try fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("\(title).m4a")
             try fm.copyItem(at: audioFile.url, to: url)
             
-            _ = Recording(title: title, key: "\(originalKey[0]) \(originalKey[1])", url: url, context: stack.context)
+            recording.title = title
+            recording.url = url.absoluteString
             stack.save()
         } catch {
             print(error)
@@ -176,6 +173,10 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
     }
     
     // MARK: Helpers
+    func verifyFileExists() -> Bool {
+        let fileManager = FileManager.default
+        return fileManager.fileExists(atPath: recording.url!)
+    }
     
     func updatePlayButtonTitle(playState: PlayingState) {
         switch playState {

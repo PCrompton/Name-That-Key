@@ -14,6 +14,7 @@ import CoreData
 class CoreDataTableViewController: UITableViewController {
     
     // MARK: Properties
+    let stack = Constants.stack
     
     var fetchedResultsController : NSFetchedResultsController<NSFetchRequestResult>? {
         didSet {

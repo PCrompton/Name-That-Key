@@ -14,4 +14,5 @@ struct Constants {
         ["C", blackKey, "D", blackKey, "E", "F", blackKey, "G", blackKey, "A", blackKey, "B"],
         ["Major", "Minor"]
     ]
+    static let stack = CoreDataStack(modelName: "Model")!
 }

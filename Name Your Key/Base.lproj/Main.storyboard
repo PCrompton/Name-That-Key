@@ -125,6 +125,7 @@
                         <outlet property="originalKeyLabel" destination="xDF-fH-Jsq" id="54W-NS-hsx"/>
                         <outlet property="pickerView" destination="uzF-tV-JPp" id="aZW-uv-tdU"/>
                         <outlet property="playButton" destination="Ovv-TC-RBe" id="ZGg-c8-wQ4"/>
+                        <outlet property="saveButton" destination="Vxe-ZU-tml" id="6qh-7v-25c"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NWI-ia-sEV" userLabel="First Responder" sceneMemberID="firstResponder"/>

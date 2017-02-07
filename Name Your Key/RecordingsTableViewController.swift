@@ -12,8 +12,6 @@ import AVFoundation
 
 class RecordingsTableViewController: CoreDataTableViewController {
 
-    let stack = (UIApplication.shared.delegate as! AppDelegate).stack
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -45,6 +43,8 @@ class RecordingsTableViewController: CoreDataTableViewController {
         stack.save()
     }
     
+    // MARK: UITableViewDataSource methods
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "RecordingsTableViewCell")
         let recording = fetchedResultsController!.object(at: indexPath) as! Recording
@@ -52,12 +52,12 @@ class RecordingsTableViewController: CoreDataTableViewController {
         return cell
     }
     
+    // MARK: UITableViewDelegate methods
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let recording = fetchedResultsController!.object(at: indexPath) as! Recording
         let playAudioVC = storyboard?.instantiateViewController(withIdentifier: "playAudioViewController") as! PlayAudioViewController
-        playAudioVC.recordedAudioURL = URL(string: recording.url!)!
-        playAudioVC.originalKey = [recording.key!]
-        playAudioVC.title = recording.title
+        playAudioVC.recording = recording
         show(playAudioVC, sender: self)
     }
     
@@ -71,5 +71,4 @@ class RecordingsTableViewController: CoreDataTableViewController {
         }
         return [deleteAction]
     }
-    
 }

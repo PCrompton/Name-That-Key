@@ -12,6 +12,13 @@ import AVFoundation
 class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
     var audioRecorder: AVAudioRecorder!
+    let audioFileLocation = NSTemporaryDirectory().appending("audioRecording.m4a")
+    let audioRecordingSettings = [
+        AVFormatIDKey: NSNumber.init(value: kAudioFormatAppleLossless),
+        AVSampleRateKey: NSNumber.init(value: 44100.0),
+        AVNumberOfChannelsKey: NSNumber.init(value: 1),
+        AVLinearPCMBitDepthKey: NSNumber.init(value: 16),
+        AVEncoderAudioQualityKey: NSNumber.init(value: AVAudioQuality.high.rawValue)]
 
     @IBOutlet weak var recordButton: UIButton!
     @IBOutlet weak var pickerView: UIPickerView!
@@ -68,7 +75,7 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate, UIPi
         
         do {
             try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
-            try audioRecorder = AVAudioRecorder(url: URL(fileURLWithPath:audioFileLocation()), settings: audioRecordingSettings())
+            try audioRecorder = AVAudioRecorder(url: URL(fileURLWithPath:audioFileLocation), settings: audioRecordingSettings)
             audioRecorder.delegate = self
             audioRecorder.prepareToRecord()
         } catch {
@@ -79,12 +86,10 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate, UIPi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "stopRecording" {
             let playAudioVC = segue.destination as! PlayAudioViewController
-            let recordedAudioURL = URL(fileURLWithPath: audioFileLocation())
-            playAudioVC.recordedAudioURL = recordedAudioURL
-            playAudioVC.originalKey = key
+            let recordedAudioURL = URL(fileURLWithPath: audioFileLocation)
+            playAudioVC.recording = Recording(title: nil, key: "\(key[0]) \(key[1])", url: recordedAudioURL, context: Constants.stack.context)
         }
     }
-    
     
     func audioRecorderDidFinishRecording(_ recorder: AVAudioRecorder, successfully flag: Bool) {
         if flag {
@@ -95,18 +100,6 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate, UIPi
     }
     
     // MARK: Helpers
-    func audioFileLocation() -> String {
-        return NSTemporaryDirectory().appending("audioRecording.m4a")
-    }
-    
-    func audioRecordingSettings() -> [String: Any] {
-        let settings = [AVFormatIDKey: NSNumber.init(value: kAudioFormatAppleLossless),
-                        AVSampleRateKey: NSNumber.init(value: 44100.0),
-                        AVNumberOfChannelsKey: NSNumber.init(value: 1),
-                        AVLinearPCMBitDepthKey: NSNumber.init(value: 16),
-                        AVEncoderAudioQualityKey: NSNumber.init(value: AVAudioQuality.high.rawValue)]
-        return settings
-    }
     
     func updateRecordButtonTitle() {
         if audioRecorder.isRecording {
@@ -118,7 +111,7 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate, UIPi
     
     func verifyFileExists() -> Bool {
         let fileManager = FileManager.default
-        return fileManager.fileExists(atPath: self.audioFileLocation())
+        return fileManager.fileExists(atPath: self.audioFileLocation)
     }
     
     // MARK: UIPickerViewDataSource methods
