@@ -9,10 +9,10 @@
 import Foundation
 
 struct Constants {
-    static let blackKey = "♯/♭"
     static let keys = [
-        ["C", blackKey, "D", blackKey, "E", "F", blackKey, "G", blackKey, "A", blackKey, "B"],
+        ["C", "C♯/D♭", "D", "D♯/E♭", "E", "F", "F♯/G♭", "G", "G♯/A♭", "A", "A♯/B♭", "B"],
         ["Major", "Minor"]
     ]
     static let stack = CoreDataStack(modelName: "Model")!
+    static let audioFileLocation = NSTemporaryDirectory().appending("audioRecording.m4a")
 }
