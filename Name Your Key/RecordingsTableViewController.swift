@@ -49,6 +49,7 @@ class RecordingsTableViewController: CoreDataTableViewController {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "RecordingsTableViewCell")
         let recording = fetchedResultsController!.object(at: indexPath) as! Recording
         cell.textLabel?.text = recording.title
+        cell.detailTextLabel?.text = recording.key
         return cell
     }
     
