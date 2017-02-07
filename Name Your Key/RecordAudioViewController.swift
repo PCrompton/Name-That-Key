@@ -101,7 +101,7 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate, UIPi
     
     func updateRecordButtonTitle() {
         if audioRecorder.isRecording {
-            recordButton.setTitle("Recording...", for: .normal)
+            recordButton.setTitle("Stop Recording...", for: .normal)
         } else {
             recordButton.setTitle("Record", for: .normal)
         }
