@@ -12,6 +12,7 @@ import AVFoundation
 class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
 
     var recording: Recording!
+    var audioFileURL: URL!
     var audioFile: AVAudioFile!
     var audioEngine: AVAudioEngine!
     var audioPlayerNode: AVAudioPlayerNode!
@@ -35,6 +36,15 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
             saveButton.isEnabled = false
         } else {
             self.title = "Untitled"
+        }
+        if let filename = recording.filename {
+            do {
+                audioFileURL = try FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(filename)
+            } catch {
+                fatalError("Could not get file path")
+            }
+        } else {
+            audioFileURL = URL(fileURLWithPath: Constants.audioFileLocation)
         }
         originalKeyLabel.text = recording.key!
         setupAudio()
@@ -63,12 +73,8 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
         titleAlertController.addTextField(configurationHandler: nil)
         let saveAction = UIAlertAction(title: "Save", style: .default) { (saveAction) in
             if let text = titleAlertController.textFields?[0].text {
-                self.saveAudio(title: "\(text).m4a")
+                self.saveAudio(title: text)
                 _ = self.navigationController?.popToRootViewController(animated: true)
-            } else {
-                DispatchQueue.main.async {
-                    self.saveButton(sender)
-                }
             }
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
@@ -83,7 +89,7 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
         audioEngine = AVAudioEngine()
 
         do {
-            audioFile = try AVAudioFile(forReading: URL(string: recording.url!)!)
+            audioFile = try AVAudioFile(forReading: audioFileURL)
         } catch {
             fatalError(error.localizedDescription)
         }
@@ -157,14 +163,16 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
     }
     
     func saveAudio(title: String) {
+        recording.title = title
+        recording.filename = "\(title).m4a"
         let stack = Constants.stack
         let fm = FileManager.default
+
         do {
-            let url = try fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent("\(title).m4a")
-            try fm.copyItem(at: audioFile.url, to: url)
+            let srcURL = audioFile.url
+            let dstURL = try fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: true).appendingPathComponent(recording.filename!)
+            try fm.copyItem(at: srcURL, to: dstURL)
             
-            recording.title = title
-            recording.url = url.absoluteString
             stack.save()
         } catch {
             print(error)
@@ -175,7 +183,7 @@ class PlayAudioViewController: UIViewController, UIPickerViewDataSource, UIPicke
     // MARK: Helpers
     func verifyFileExists() -> Bool {
         let fileManager = FileManager.default
-        return fileManager.fileExists(atPath: recording.url!)
+        return fileManager.fileExists(atPath: audioFileURL.absoluteString)
     }
     
     func updatePlayButtonTitle(playState: PlayingState) {

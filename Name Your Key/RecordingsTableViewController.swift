@@ -33,7 +33,7 @@ class RecordingsTableViewController: CoreDataTableViewController {
     func deleteRecording(recording: Recording) {
         let fm = FileManager.default
         do {
-            let url = try fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: URL(string: recording.url!)!, create: false)
+            let url = try fm.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false).appendingPathComponent(recording.filename!)
             try fm.removeItem(at: url)
         } catch {
             print(error.localizedDescription)

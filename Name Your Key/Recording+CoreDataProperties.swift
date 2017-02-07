@@ -16,7 +16,7 @@ extension Recording {
         return NSFetchRequest<Recording>(entityName: "Recording");
     }
 
-    @NSManaged public var url: String?
+    @NSManaged public var filename: String?
     @NSManaged public var dateCreated: NSDate?
     @NSManaged public var key: String?
     @NSManaged public var title: String?

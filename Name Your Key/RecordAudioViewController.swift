@@ -12,7 +12,6 @@ import AVFoundation
 class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate, UIPickerViewDelegate, UIPickerViewDataSource {
 
     var audioRecorder: AVAudioRecorder!
-    let audioFileLocation = NSTemporaryDirectory().appending("audioRecording.m4a")
     let audioRecordingSettings = [
         AVFormatIDKey: NSNumber.init(value: kAudioFormatAppleLossless),
         AVSampleRateKey: NSNumber.init(value: 44100.0),
@@ -75,7 +74,7 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate, UIPi
         
         do {
             try audioSession.setCategory(AVAudioSessionCategoryPlayAndRecord)
-            try audioRecorder = AVAudioRecorder(url: URL(fileURLWithPath:audioFileLocation), settings: audioRecordingSettings)
+            try audioRecorder = AVAudioRecorder(url: URL(fileURLWithPath: Constants.audioFileLocation), settings: audioRecordingSettings)
             audioRecorder.delegate = self
             audioRecorder.prepareToRecord()
         } catch {
@@ -86,8 +85,7 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate, UIPi
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "stopRecording" {
             let playAudioVC = segue.destination as! PlayAudioViewController
-            let recordedAudioURL = URL(fileURLWithPath: audioFileLocation)
-            playAudioVC.recording = Recording(title: nil, key: "\(key[0]) \(key[1])", url: recordedAudioURL, context: Constants.stack.context)
+            playAudioVC.recording = Recording(title: nil, key: "\(key[0]) \(key[1])", filename: nil, context: Constants.stack.context)
         }
     }
     
@@ -111,7 +109,7 @@ class RecordAudioViewController: UIViewController, AVAudioRecorderDelegate, UIPi
     
     func verifyFileExists() -> Bool {
         let fileManager = FileManager.default
-        return fileManager.fileExists(atPath: self.audioFileLocation)
+        return fileManager.fileExists(atPath: Constants.audioFileLocation)
     }
     
     // MARK: UIPickerViewDataSource methods
